@@ -1,0 +1,9 @@
+{
+    "item.timeworldmod.normal_clock": "MOB SpeedReset Clock",
+    "item.timeworldmod.slow_clock": "MOB SpeedDown Clock",
+    "item.timeworldmod.fast_clock": "MOB SpeedUp Clock",
+    "item.timeworldmod.stop_clock": "MOB Stop Clock",
+    "item.timeworldmod.world_stop_clock": "World Stop Clock",
+    "item.timeworldmod.strengthen_clock": "MOB Strengthen Clock",
+    "item.timeworldmod.weaken_clock": "Player Weakening Clock"
+}

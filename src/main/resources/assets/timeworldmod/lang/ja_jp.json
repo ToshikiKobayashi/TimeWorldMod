@@ -1,0 +1,9 @@
+{
+    "item.timeworldmod.normal_clock": "モブ速度リセット時計",
+    "item.timeworldmod.slow_clock": "モブ速度ダウン時計",
+    "item.timeworldmod.fast_clock": "モブ速度アップ時計",
+    "item.timeworldmod.stop_clock": "モブ停止時計",
+    "item.timeworldmod.world_stop_clock": "ワールド停止時計",
+    "item.timeworldmod.strengthen_clock": "モブ強化時計",
+    "item.timeworldmod.weaken_clock": "プレイヤー弱体化時計"
+}

@@ -1,0 +1,100 @@
+package com.kotoshi.timeworldmod.item;
+
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.ai.attributes.AttributeModifier;
+import net.minecraft.world.entity.ai.attributes.Attributes;
+
+import java.util.List;
+
+import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
+
+public class FastClock extends Item {
+    public FastClock(Properties props) {
+        super(props);
+    }
+
+    
+    @Override
+    public boolean isFoil(ItemStack stack) {
+        return true; // 常にエンチャントグロウ効果を表示
+    }
+
+    @Override
+    public InteractionResult use(Level level, Player player, InteractionHand hand) {
+        if (!level.isClientSide) {
+            if (level instanceof ServerLevel serverLevel) {
+                double centerX = player.getX();
+                double centerY = player.getY() + 0.1; // 少し浮かせる
+                double centerZ = player.getZ();
+            
+                double radius = 3.0; // 円の半径
+                int points = 240;     // パーティクルの数
+            
+                for (int i = 0; i < points; i++) {
+                    double angle = 2 * Math.PI * i / points; // ラジアンに変換
+                    double x = centerX + Math.cos(angle) * radius;
+                    double z = centerZ + Math.sin(angle) * radius;
+            
+                    serverLevel.sendParticles(
+                        ParticleTypes.ENCHANT, // 魔法っぽいエフェクト
+                        x, centerY, z,
+                        1, // 1つずつ
+                        0, 0, 0, // 広がりなし
+                        0        // 速度なし
+                    );
+                }
+            }
+            int radius = 3; // 効果範囲
+            int duration = 200; // 効果時間 (tick) → 10秒
+            
+            List<LivingEntity> mobs = level.getEntitiesOfClass(
+                net.minecraft.world.entity.LivingEntity.class,
+                player.getBoundingBox().inflate(radius),
+                e -> !(e instanceof Player)
+            ); // プレイヤー以外
+
+            int affectedMobs = 0;
+            for (LivingEntity mob : mobs) {
+                // 速度低下の AttributeModifier
+                ResourceLocation slowIdRL = ResourceLocation.fromNamespaceAndPath("timeworldmod", "clock_speed");
+                AttributeModifier slow = new AttributeModifier(
+                    slowIdRL,
+                    +0.5, // +50%
+                    AttributeModifier.Operation.ADD_VALUE
+                );
+    
+                var attr = mob.getAttribute(Attributes.MOVEMENT_SPEED);
+                
+                if (attr != null) {
+                    // 既存のモディファイアがあれば削除
+                    if (attr.hasModifier(slowIdRL)) {
+                        attr.removeModifier(slowIdRL);
+                    }
+                    
+                    attr.addTransientModifier(slow);
+                    affectedMobs++;
+    
+                    // 一定時間後に解除
+                    ((ServerLevel) level).scheduleTick(mob.blockPosition(), level.getBlockState(mob.blockPosition()).getBlock(), duration);
+                    // ↑ここは自前のTickカウンタやイベントで管理する方が確実
+                }
+            }
+            
+            // プレイヤーにメッセージを表示
+            player.displayClientMessage(
+                Component.literal("§cモブ速度アップ時計使用！ " + affectedMobs + "体のモブの速度を50%上昇させました"),
+                true
+            );
+        }
+        return InteractionResult.SUCCESS;
+    }
+}
