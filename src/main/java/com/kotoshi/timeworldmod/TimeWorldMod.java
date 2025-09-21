@@ -23,6 +23,7 @@ import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
+import net.minecraft.world.item.SpawnEggItem;
 
 @Mod(TimeWorldMod.MODID)
 public class TimeWorldMod {
@@ -51,9 +52,8 @@ public class TimeWorldMod {
     public static final RegistryObject<Item> WEAKEN_CLOCK_ITEM = ITEMS.register("weaken_clock",
         () -> new WeakenClock(new Properties().setId(ITEMS.key("weaken_clock")))
     );
-
     // エンティティ登録
-    public static final DeferredRegister<EntityType<?>> ENTITY_TYPES = 
+    public static final DeferredRegister<EntityType<?>> ENTITY_TYPES =
         DeferredRegister.create(ForgeRegistries.ENTITY_TYPES, MODID);
 
     public static final RegistryObject<EntityType<FutureZombie>> FUTURE_ZOMBIE = 
@@ -61,6 +61,14 @@ public class TimeWorldMod {
             () -> EntityType.Builder.of(FutureZombie::new, MobCategory.MONSTER)
                 .sized(0.6f, 1.8f)
                 .build(ENTITY_TYPES.key("future_zombie")));
+
+    // FUTURE_ZOMBIEエンティティのスポーンエッグ登録
+    public static final RegistryObject<Item> FUTURE_ZOMBIE_SPAWN_EGG = ITEMS.register("future_zombie_spawn_egg",
+        () -> new SpawnEggItem(
+            FUTURE_ZOMBIE.get(),
+            new Item.Properties().setId(ITEMS.key("future_zombie_spawn_egg"))
+        )
+    );
 
     // クリエイティブタブ登録
     public static final DeferredRegister<CreativeModeTab> CREATIVE_MODE_TABS = 
@@ -78,6 +86,7 @@ public class TimeWorldMod {
             output.accept(WORLD_STOP_CLOCK_ITEM.get());
             output.accept(STRENGTHEN_CLOCK.get());
             output.accept(WEAKEN_CLOCK_ITEM.get());
+            output.accept(FUTURE_ZOMBIE_SPAWN_EGG.get());
         })
         .build());
 
