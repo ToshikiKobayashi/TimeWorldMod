@@ -7,5 +7,6 @@
     "item.timeworldmod.strengthen_clock": "モブ強化時計",
     "item.timeworldmod.weaken_clock": "プレイヤー弱体化時計",
     "item.timeworldmod.future_zombie_spawn_egg": "未来ゾンビスポーンエッグ",
-    "entity.timeworldmod.future_zombie": "未来ゾンビ"
+    "entity.timeworldmod.future_zombie": "未来ゾンビ",
+    "itemGroup.timeworldmod": "タイムワールド"
 }
