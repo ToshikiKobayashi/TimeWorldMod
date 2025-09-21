@@ -1,0 +1,24 @@
+{
+    "format_version": "1.10.0",
+    "minecraft:client_entity": {
+        "description": {
+            "identifier": "timeworldmod:future_zombie",
+            "materials": {
+                "default": "entity_alphatest"
+            },
+            "textures": {
+                "default": "textures/entity/future_zombie"
+            },
+            "geometry": {
+                "default": "geometry.future_zombie"
+            },
+            "render_controllers": [
+                "controller.render.default"
+            ],
+            "spawn_egg": {
+                "base_color": "#FFD700",
+                "overlay_color": "#FFFFFF"
+            }
+        }
+    }
+} 

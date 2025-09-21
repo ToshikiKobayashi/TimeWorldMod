@@ -1,7 +1,7 @@
 package com.kotoshi.timeworldmod;
 
 import com.kotoshi.timeworldmod.item.SlowClock;
-
+import com.kotoshi.timeworldmod.entity.FutureZombie;
 import com.kotoshi.timeworldmod.item.FastClock;
 import com.kotoshi.timeworldmod.item.NormalClock;
 import com.kotoshi.timeworldmod.item.StrengthenClock;
@@ -9,8 +9,12 @@ import com.kotoshi.timeworldmod.item.WeakenClock;
 import com.kotoshi.timeworldmod.item.StopClock;
 import com.kotoshi.timeworldmod.item.WorldStopClock;
 
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.MobCategory;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Item.Properties;
+import net.minecraftforge.event.entity.EntityAttributeCreationEvent;
+import net.minecraftforge.eventbus.api.listener.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.registries.DeferredRegister;
@@ -43,9 +47,30 @@ public class TimeWorldMod {
         () -> new WeakenClock(new Properties().setId(ITEMS.key("weaken_clock")))
     );
 
+    public static final DeferredRegister<EntityType<?>> ENTITY_TYPES = 
+        DeferredRegister.create(ForgeRegistries.ENTITY_TYPES, MODID);
+
+    public static final RegistryObject<EntityType<FutureZombie>> FUTURE_ZOMBIE = 
+        ENTITY_TYPES.register("future_zombie",
+            () -> EntityType.Builder.of(FutureZombie::new, MobCategory.MONSTER)
+                .sized(0.6f, 1.8f)
+                .build(ENTITY_TYPES.key("future_zombie")));
+
     public TimeWorldMod(FMLJavaModLoadingContext context) {
         var modBusGroup = context.getModBusGroup();
         ITEMS.register(modBusGroup);
+        ENTITY_TYPES.register(modBusGroup);
     }
 
+    @Mod.EventBusSubscriber(modid = MODID, bus = Mod.EventBusSubscriber.Bus.MOD)
+    public static class ModEventBusSubscriber {
+        @SubscribeEvent
+        public static void entityAttributeEvent(EntityAttributeCreationEvent event) {
+            try {
+                event.put(FUTURE_ZOMBIE.get(), FutureZombie.createAttributes().build());
+            } catch (IllegalStateException e) {
+                // すでに登録されている場合は無視
+            }
+        }
+    }
 }
