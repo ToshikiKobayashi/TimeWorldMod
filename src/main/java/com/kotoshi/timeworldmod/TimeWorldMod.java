@@ -9,8 +9,11 @@ import com.kotoshi.timeworldmod.item.WeakenClock;
 import com.kotoshi.timeworldmod.item.StopClock;
 import com.kotoshi.timeworldmod.item.WorldStopClock;
 
+import net.minecraft.core.registries.Registries;
+import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
+import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Item.Properties;
 import net.minecraftforge.event.entity.EntityAttributeCreationEvent;
@@ -24,6 +27,8 @@ import net.minecraftforge.registries.RegistryObject;
 @Mod(TimeWorldMod.MODID)
 public class TimeWorldMod {
     public static final String MODID = "timeworldmod";
+
+    // アイテム登録
     public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, MODID);
     public static final RegistryObject<Item> SLOW_CLOCK_ITEM = ITEMS.register("slow_clock",
         () -> new SlowClock(new Properties().setId(ITEMS.key("slow_clock")))
@@ -40,13 +45,14 @@ public class TimeWorldMod {
     public static final RegistryObject<Item> WORLD_STOP_CLOCK_ITEM = ITEMS.register("world_stop_clock",
         () -> new WorldStopClock(new Properties().setId(ITEMS.key("world_stop_clock")))
     );
-    public static final RegistryObject<Item> POWER_STONE_ITEM = ITEMS.register("strengthen_clock",
+    public static final RegistryObject<Item> STRENGTHEN_CLOCK = ITEMS.register("strengthen_clock",
         () -> new StrengthenClock(new Properties().setId(ITEMS.key("strengthen_clock")))
     );
     public static final RegistryObject<Item> WEAKEN_CLOCK_ITEM = ITEMS.register("weaken_clock",
         () -> new WeakenClock(new Properties().setId(ITEMS.key("weaken_clock")))
     );
 
+    // エンティティ登録
     public static final DeferredRegister<EntityType<?>> ENTITY_TYPES = 
         DeferredRegister.create(ForgeRegistries.ENTITY_TYPES, MODID);
 
@@ -56,10 +62,30 @@ public class TimeWorldMod {
                 .sized(0.6f, 1.8f)
                 .build(ENTITY_TYPES.key("future_zombie")));
 
+    // クリエイティブタブ登録
+    public static final DeferredRegister<CreativeModeTab> CREATIVE_MODE_TABS = 
+        DeferredRegister.create(Registries.CREATIVE_MODE_TAB, MODID);
+
+    public static final RegistryObject<CreativeModeTab> CREATIVE_MODE_TAB = CREATIVE_MODE_TABS.register("timeworld_tab",
+    () -> CreativeModeTab.builder()
+        .title(Component.translatable("itemGroup.timeworldmod"))
+        .icon(() -> NORMAL_CLOCK_ITEM.get().getDefaultInstance())
+        .displayItems((parameters, output) -> {
+            output.accept(SLOW_CLOCK_ITEM.get());
+            output.accept(FAST_CLOCK_ITEM.get());
+            output.accept(NORMAL_CLOCK_ITEM.get());
+            output.accept(STOP_CLOCK_ITEM.get());
+            output.accept(WORLD_STOP_CLOCK_ITEM.get());
+            output.accept(STRENGTHEN_CLOCK.get());
+            output.accept(WEAKEN_CLOCK_ITEM.get());
+        })
+        .build());
+
     public TimeWorldMod(FMLJavaModLoadingContext context) {
         var modBusGroup = context.getModBusGroup();
         ITEMS.register(modBusGroup);
         ENTITY_TYPES.register(modBusGroup);
+        CREATIVE_MODE_TABS.register(modBusGroup);
     }
 
     @Mod.EventBusSubscriber(modid = MODID, bus = Mod.EventBusSubscriber.Bus.MOD)
