@@ -3,6 +3,7 @@ package com.kotoshi.timeworldmod;
 import com.kotoshi.timeworldmod.item.SlowClock;
 import com.kotoshi.timeworldmod.entity.FutureZombie;
 import com.kotoshi.timeworldmod.entity.PastZombie;
+import com.kotoshi.timeworldmod.item.EvolutionClock;
 import com.kotoshi.timeworldmod.item.FastClock;
 import com.kotoshi.timeworldmod.item.NormalClock;
 import com.kotoshi.timeworldmod.item.StrengthenClock;
@@ -53,6 +54,9 @@ public class TimeWorldMod {
     public static final RegistryObject<Item> WEAKEN_CLOCK_ITEM = ITEMS.register("weaken_clock",
         () -> new WeakenClock(new Properties().setId(ITEMS.key("weaken_clock")))
     );
+    public static final RegistryObject<Item> EVOLUTION_CLOCK_ITEM = ITEMS.register("evolution_clock",
+        () -> new EvolutionClock(new Properties().setId(ITEMS.key("evolution_clock")))
+    );
     // エンティティ登録
     public static final DeferredRegister<EntityType<?>> ENTITY_TYPES =
         DeferredRegister.create(ForgeRegistries.ENTITY_TYPES, MODID);
@@ -98,6 +102,7 @@ public class TimeWorldMod {
             output.accept(WORLD_STOP_CLOCK_ITEM.get());
             output.accept(STRENGTHEN_CLOCK.get());
             output.accept(WEAKEN_CLOCK_ITEM.get());
+            output.accept(EVOLUTION_CLOCK_ITEM.get());
             output.accept(FUTURE_ZOMBIE_SPAWN_EGG.get());
             output.accept(PAST_ZOMBIE_SPAWN_EGG.get());
         })
