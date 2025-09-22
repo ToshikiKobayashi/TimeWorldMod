@@ -2,6 +2,7 @@ package com.kotoshi.timeworldmod;
 
 import com.kotoshi.timeworldmod.item.SlowClock;
 import com.kotoshi.timeworldmod.entity.FutureZombie;
+import com.kotoshi.timeworldmod.entity.PastZombie;
 import com.kotoshi.timeworldmod.item.FastClock;
 import com.kotoshi.timeworldmod.item.NormalClock;
 import com.kotoshi.timeworldmod.item.StrengthenClock;
@@ -61,12 +62,23 @@ public class TimeWorldMod {
             () -> EntityType.Builder.of(FutureZombie::new, MobCategory.MONSTER)
                 .sized(0.6f, 1.8f)
                 .build(ENTITY_TYPES.key("future_zombie")));
+    public static final RegistryObject<EntityType<PastZombie>> PAST_ZOMBIE = 
+        ENTITY_TYPES.register("past_zombie",
+            () -> EntityType.Builder.of(PastZombie::new, MobCategory.MONSTER)
+                .sized(0.6f, 3.6f)
+                .build(ENTITY_TYPES.key("past_zombie")));
 
     // FUTURE_ZOMBIEエンティティのスポーンエッグ登録
     public static final RegistryObject<Item> FUTURE_ZOMBIE_SPAWN_EGG = ITEMS.register("future_zombie_spawn_egg",
         () -> new SpawnEggItem(
             FUTURE_ZOMBIE.get(),
             new Item.Properties().setId(ITEMS.key("future_zombie_spawn_egg"))
+        )
+    );
+    public static final RegistryObject<Item> PAST_ZOMBIE_SPAWN_EGG = ITEMS.register("past_zombie_spawn_egg",
+        () -> new SpawnEggItem(
+            PAST_ZOMBIE.get(),
+            new Item.Properties().setId(ITEMS.key("past_zombie_spawn_egg"))
         )
     );
 
@@ -87,6 +99,7 @@ public class TimeWorldMod {
             output.accept(STRENGTHEN_CLOCK.get());
             output.accept(WEAKEN_CLOCK_ITEM.get());
             output.accept(FUTURE_ZOMBIE_SPAWN_EGG.get());
+            output.accept(PAST_ZOMBIE_SPAWN_EGG.get());
         })
         .build());
 
@@ -103,6 +116,7 @@ public class TimeWorldMod {
         public static void entityAttributeEvent(EntityAttributeCreationEvent event) {
             try {
                 event.put(FUTURE_ZOMBIE.get(), FutureZombie.createAttributes().build());
+                event.put(PAST_ZOMBIE.get(), PastZombie.createAttributes().build());
             } catch (IllegalStateException e) {
                 // すでに登録されている場合は無視
             }

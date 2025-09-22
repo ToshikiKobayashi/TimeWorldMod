@@ -1,0 +1,24 @@
+{
+    "format_version": "1.10.0",
+    "minecraft:client_entity": {
+        "description": {
+            "identifier": "timeworldmod:past_zombie",
+            "materials": {
+                "default": "entity_alphatest"
+            },
+            "textures": {
+                "default": "textures/entity/past_zombie"
+            },
+            "geometry": {
+                "default": "geometry.past_zombie"
+            },
+            "render_controllers": [
+                "controller.render.default"
+            ],
+            "spawn_egg": {
+                "base_color": "#FFD700",
+                "overlay_color": "#FFFFFF"
+            }
+        }
+    }
+} 
