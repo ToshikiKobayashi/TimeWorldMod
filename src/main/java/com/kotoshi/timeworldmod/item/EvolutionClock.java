@@ -6,6 +6,10 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.storage.CommandStorage;
+
+import com.kotoshi.timeworldmod.TimeWorldMod;
+
+
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
@@ -22,22 +26,26 @@ public class EvolutionClock extends Item {
 			CommandStorage storage = serverLevel.getServer().getCommandStorage();
 			ResourceLocation key = ResourceLocation.fromNamespaceAndPath("timeworldmod", "evolution_clock");
 			CompoundTag data = storage.get(key);
-			boolean evolutionEnabled = false;
+			Integer evolutionType = 0;
 			if (data != null) {
-				evolutionEnabled = data.getBoolean("evolutionEnabled").orElse(false);
+				evolutionType = data.getInt("evolutionType").orElse(TimeWorldMod.TIMEWORLD_TYPE_NORMAL);
 			} else {
 				data = new CompoundTag();
 			}
-			if (evolutionEnabled) {
-				data.putBoolean("evolutionEnabled", false);
+			if (evolutionType.equals(TimeWorldMod.TIMEWORLD_TYPE_NORMAL)) {
+				data.putInt("evolutionType", TimeWorldMod.TIMEWORLD_TYPE_PAST);
 				player.displayClientMessage(
-					Component.literal("モブの進化が停止しました"), true
+					Component.literal("過去の世界になりました"), true
+				);
+			} else if (evolutionType.equals(TimeWorldMod.TIMEWORLD_TYPE_PAST)) {
+				data.putInt("evolutionType", TimeWorldMod.TIMEWORLD_TYPE_FUTURE);
+				player.displayClientMessage(
+					Component.literal("未来の世界になりました"), true
 				);
 			} else {
-				data.putBoolean("evolutionEnabled", true);
-				long currentDay = serverLevel.getDayTime() / 24000L;
+				data.putInt("evolutionType", TimeWorldMod.TIMEWORLD_TYPE_NORMAL);
 				player.displayClientMessage(
-					Component.literal("モブの進化が開始しました（開始時間：" + currentDay + "日）"), true
+					Component.literal("世界が戻りました"), true
 				);
 			}
 			storage.set(key, data);

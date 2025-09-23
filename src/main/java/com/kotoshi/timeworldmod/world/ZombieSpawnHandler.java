@@ -19,14 +19,16 @@ public class ZombieSpawnHandler {
 
     @SubscribeEvent
     public static void onZombieSpawn(MobSpawnEvent.FinalizeSpawn event) {
+        if(event.getSpawnReason() != EntitySpawnReason.NATURAL) return;
+
         CommandStorage storage = event.getLevel().getServer().getCommandStorage();
         ResourceLocation key = ResourceLocation.fromNamespaceAndPath("timeworldmod", "evolution_clock");
         CompoundTag data = storage.get(key);
-        boolean evolutionEnabled = false;
+        Integer evolutionType = 0;
         if (data != null) {
-            evolutionEnabled = data.getBoolean("evolutionEnabled").orElse(false);
+            evolutionType = data.getInt("evolutionType").orElse(0);
         }
-        if (!evolutionEnabled) return;
+        if (evolutionType == 0) return;
 
         // サーバー側だけで処理
         Entity entity = event.getEntity();
@@ -34,13 +36,14 @@ public class ZombieSpawnHandler {
         Level level = oldZombie.level();
         if (level.isClientSide()) return;
 
-        long days = level.getDayTime() / 24000L;
         EntityType<? extends Zombie> replacementType = null;
 
-        if (days >= 7) {
-            replacementType = TimeWorldMod.FUTURE_ZOMBIE.get();
-        } else if (days <= 3) {
+        if (evolutionType.equals(TimeWorldMod.TIMEWORLD_TYPE_PAST)) {
             replacementType = TimeWorldMod.PAST_ZOMBIE.get();
+        } else if (evolutionType.equals(TimeWorldMod.TIMEWORLD_TYPE_FUTURE)) {
+            replacementType = TimeWorldMod.FUTURE_ZOMBIE.get();
+        } else {
+            replacementType = null;
         }
 
         if (replacementType == null) return;

@@ -30,6 +30,9 @@ import net.minecraft.world.item.SpawnEggItem;
 @Mod(TimeWorldMod.MODID)
 public class TimeWorldMod {
     public static final String MODID = "timeworldmod";
+    public static final Integer TIMEWORLD_TYPE_NORMAL = 0;
+    public static final Integer TIMEWORLD_TYPE_PAST = 1;
+    public static final Integer TIMEWORLD_TYPE_FUTURE = 2;
 
     // アイテム登録
     public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, MODID);
