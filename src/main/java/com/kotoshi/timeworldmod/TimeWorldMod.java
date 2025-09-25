@@ -15,6 +15,7 @@ import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
+import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Item.Properties;
@@ -26,6 +27,8 @@ import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 import net.minecraft.world.item.SpawnEggItem;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockBehaviour;
 
 @Mod(TimeWorldMod.MODID)
 public class TimeWorldMod {
@@ -60,6 +63,8 @@ public class TimeWorldMod {
     public static final RegistryObject<Item> EVOLUTION_CLOCK_ITEM = ITEMS.register("evolution_clock",
         () -> new EvolutionClock(new Properties().setId(ITEMS.key("evolution_clock")))
     );
+    public static final RegistryObject<Item> TIME_MAGIC_STONE_ITEM = ITEMS.register("time_magic_stone",
+        () -> new Item(new Item.Properties().setId(ITEMS.key("time_magic_stone"))));
     // エンティティ登録
     public static final DeferredRegister<EntityType<?>> ENTITY_TYPES =
         DeferredRegister.create(ForgeRegistries.ENTITY_TYPES, MODID);
@@ -89,6 +94,13 @@ public class TimeWorldMod {
         )
     );
 
+    // ブロック登録
+    public static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(ForgeRegistries.BLOCKS, TimeWorldMod.MODID);
+    public static final RegistryObject<Block> TIME_MAGIC_ORE = BLOCKS.register("time_magic_ore",
+        () -> new Block(BlockBehaviour.Properties.of().strength(3.0f, 3.0f).requiresCorrectToolForDrops().setId(BLOCKS.key("time_magic_ore"))));
+    public static final RegistryObject<Item> TIME_MAGIC_ORE_ITEM = ITEMS.register("time_magic_ore",
+        () -> new BlockItem(TIME_MAGIC_ORE.get(), new Item.Properties().setId(ITEMS.key("time_magic_ore"))));
+
     // クリエイティブタブ登録
     public static final DeferredRegister<CreativeModeTab> CREATIVE_MODE_TABS = 
         DeferredRegister.create(Registries.CREATIVE_MODE_TAB, MODID);
@@ -108,6 +120,8 @@ public class TimeWorldMod {
             output.accept(EVOLUTION_CLOCK_ITEM.get());
             output.accept(FUTURE_ZOMBIE_SPAWN_EGG.get());
             output.accept(PAST_ZOMBIE_SPAWN_EGG.get());
+            output.accept(TIME_MAGIC_ORE_ITEM.get());
+            output.accept(TIME_MAGIC_STONE_ITEM.get());
         })
         .build());
 
@@ -116,6 +130,7 @@ public class TimeWorldMod {
         ITEMS.register(modBusGroup);
         ENTITY_TYPES.register(modBusGroup);
         CREATIVE_MODE_TABS.register(modBusGroup);
+        BLOCKS.register(modBusGroup);
     }
 
     @Mod.EventBusSubscriber(modid = MODID, bus = Mod.EventBusSubscriber.Bus.MOD)
