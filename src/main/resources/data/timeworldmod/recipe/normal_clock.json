@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "building",
+  "key": {
+    "T": "timeworldmod:time_magic_stone",
+    "C": "minecraft:clock",
+    "R": "minecraft:redstone"
+  },
+  "pattern": [
+    "TRT",
+    "TCT",
+    "TTT"
+  ],
+  "result": {
+    "id": "timeworldmod:normal_clock"
+  },
+  "show_notification": true
+}
