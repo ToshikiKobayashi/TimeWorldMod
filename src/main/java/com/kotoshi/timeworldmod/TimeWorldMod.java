@@ -10,6 +10,7 @@ import com.kotoshi.timeworldmod.item.StrengthenClock;
 import com.kotoshi.timeworldmod.item.WeakenClock;
 import com.kotoshi.timeworldmod.item.StopClock;
 import com.kotoshi.timeworldmod.item.WorldStopClock;
+import com.mojang.serialization.MapCodec;
 
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
@@ -29,6 +30,10 @@ import net.minecraftforge.registries.RegistryObject;
 import net.minecraft.world.item.SpawnEggItem;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockBehaviour;
+import net.minecraft.world.level.chunk.ChunkGenerator;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 @Mod(TimeWorldMod.MODID)
 public class TimeWorldMod {
@@ -36,6 +41,7 @@ public class TimeWorldMod {
     public static final Integer TIMEWORLD_TYPE_NORMAL = 0;
     public static final Integer TIMEWORLD_TYPE_PAST = 1;
     public static final Integer TIMEWORLD_TYPE_FUTURE = 2;
+    public static final Logger LOGGER = LogManager.getLogger(TimeWorldMod.MODID);
 
     // アイテム登録
     public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, MODID);
@@ -80,7 +86,7 @@ public class TimeWorldMod {
                 .sized(0.6f, 3.6f)
                 .build(ENTITY_TYPES.key("past_zombie")));
 
-    // FUTURE_ZOMBIEエンティティのスポーンエッグ登録
+    // エンティティのスポーンエッグ登録
     public static final RegistryObject<Item> FUTURE_ZOMBIE_SPAWN_EGG = ITEMS.register("future_zombie_spawn_egg",
         () -> new SpawnEggItem(
             FUTURE_ZOMBIE.get(),
@@ -125,12 +131,16 @@ public class TimeWorldMod {
         })
         .build());
 
+    public static final DeferredRegister<MapCodec<? extends ChunkGenerator>> CHUNK_GENERATORS =
+        DeferredRegister.create(Registries.CHUNK_GENERATOR, "timeworldmod");
+
     public TimeWorldMod(FMLJavaModLoadingContext context) {
         var modBusGroup = context.getModBusGroup();
         ITEMS.register(modBusGroup);
         ENTITY_TYPES.register(modBusGroup);
         CREATIVE_MODE_TABS.register(modBusGroup);
         BLOCKS.register(modBusGroup);
+        CHUNK_GENERATORS.register(modBusGroup);
     }
 
     @Mod.EventBusSubscriber(modid = MODID, bus = Mod.EventBusSubscriber.Bus.MOD)
