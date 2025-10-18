@@ -1,7 +1,9 @@
 package com.kotoshi.timeworldmod.client;
 
 import com.kotoshi.timeworldmod.TimeWorldMod;
+import com.kotoshi.timeworldmod.client.model.FutureDragonModel;
 import com.kotoshi.timeworldmod.client.model.FutureZombieModel;
+import com.kotoshi.timeworldmod.client.renderer.FutureDragonRenderer;
 import com.kotoshi.timeworldmod.client.renderer.FutureZombieRenderer;
 import com.kotoshi.timeworldmod.client.model.PastZombieModel;
 import com.kotoshi.timeworldmod.client.renderer.PastZombieRenderer;
@@ -19,11 +21,13 @@ public class ClientSetup {
     public static void onClientSetup(FMLClientSetupEvent event) {
         EntityRenderers.register(TimeWorldMod.FUTURE_ZOMBIE.get(), FutureZombieRenderer::new);
         EntityRenderers.register(TimeWorldMod.PAST_ZOMBIE.get(), PastZombieRenderer::new);
+        EntityRenderers.register(TimeWorldMod.FUTURE_DRAGON.get(), FutureDragonRenderer::new);
     }
 
     @SubscribeEvent
     public static void registerLayerDefinitions(EntityRenderersEvent.RegisterLayerDefinitions event) {
         event.registerLayerDefinition(FutureZombieModel.LAYER_LOCATION, () -> FutureZombieModel.createBodyLayer());
         event.registerLayerDefinition(PastZombieModel.LAYER_LOCATION, () -> PastZombieModel.createBodyLayer());
-    }
+        event.registerLayerDefinition(FutureDragonModel.LAYER_LOCATION, () -> FutureDragonModel.createBodyLayer());
+     }
 } 

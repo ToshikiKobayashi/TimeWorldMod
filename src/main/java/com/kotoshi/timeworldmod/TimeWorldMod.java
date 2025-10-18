@@ -1,6 +1,7 @@
 package com.kotoshi.timeworldmod;
 
 import com.kotoshi.timeworldmod.item.SlowClock;
+import com.kotoshi.timeworldmod.entity.FutureDragonEntity;
 import com.kotoshi.timeworldmod.entity.FutureZombie;
 import com.kotoshi.timeworldmod.entity.PastZombie;
 import com.kotoshi.timeworldmod.item.EvolutionClock;
@@ -86,6 +87,13 @@ public class TimeWorldMod {
                 .sized(0.6f, 3.6f)
                 .build(ENTITY_TYPES.key("past_zombie")));
 
+    public static final RegistryObject<EntityType<FutureDragonEntity>> FUTURE_DRAGON =
+        ENTITY_TYPES.register("future_dragon", 
+            () -> EntityType.Builder.of(FutureDragonEntity::new, MobCategory.MONSTER)
+                .sized(16.0F, 8.0F)
+                .fireImmune()
+                .build(ENTITY_TYPES.key("future_dragon")));
+
     // エンティティのスポーンエッグ登録
     public static final RegistryObject<Item> FUTURE_ZOMBIE_SPAWN_EGG = ITEMS.register("future_zombie_spawn_egg",
         () -> new SpawnEggItem(
@@ -150,6 +158,7 @@ public class TimeWorldMod {
             try {
                 event.put(FUTURE_ZOMBIE.get(), FutureZombie.createAttributes().build());
                 event.put(PAST_ZOMBIE.get(), PastZombie.createAttributes().build());
+                event.put(FUTURE_DRAGON.get(), FutureDragonEntity.createAttributes().build());
             } catch (IllegalStateException e) {
                 // すでに登録されている場合は無視
             }
