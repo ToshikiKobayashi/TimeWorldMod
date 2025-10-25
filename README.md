@@ -1,7 +1,13 @@
 # 時間操作Mod
 
+* 実装バージョン：Minecraft 1.21.8／Forge 58.1.0
+
 * 時間操作をして遅くしたり、早くしたり時には時代を超えたりするModです。
 * 趣味で作っており、仕様含めて試行錯誤中…
+
+* 鉱石／魔法の石
+<img width="477" height="362" alt="image" src="https://github.com/user-attachments/assets/f646721d-563b-4fba-9580-5469e71c33e8" />
+<img width="681" height="393" alt="image" src="https://github.com/user-attachments/assets/dd528777-a635-4cb2-9f3f-67b4bf845084" />
 
 
 * アイテムなど
@@ -20,6 +26,8 @@
 <img width="39" height="39" alt="image" src="https://github.com/user-attachments/assets/20fc97dd-ebe3-45d7-8718-8f41ca394b5b" />
 
 * 未来と古代のディメンジョンを作る方向で検討中
+* 現状は、オーバワールドやネザーベース
+* 今後、ベースのブロックを変えて、未来や古代っぽくしていきたい。
 <img width="554" height="381" alt="image" src="https://github.com/user-attachments/assets/63eafc60-c07f-4b87-9f11-1932fd923061" />
 <img width="763" height="465" alt="image" src="https://github.com/user-attachments/assets/b58176e4-5f16-4f80-904b-5133e8b05201" />
 
